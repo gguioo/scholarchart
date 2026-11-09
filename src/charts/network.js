@@ -123,60 +123,67 @@ function toSvg(svg, ev) {
   return { x: (ev.clientX - r.left) / r.width * +svg.getAttribute('width'), y: (ev.clientY - r.top) / r.height * +svg.getAttribute('height') };
 }
 
-/* 迷你力导向（零依赖自实现：斥力 + 弹簧 + 向心 + 阻尼 + 边界） */
+/* 迷你力导向（零依赖自实现：斥力 + 弹簧 + 向心 + alpha 衰减收敛 + 力/速度上限防爆） */
 function d3like(N, E, { charge, linkDist, linkStrength, bounds }) {
-  let running = true, raf = null;
+  let alpha = 1, running = true, raf = null, stopT = null;
   const center = { x: (bounds.x0 + bounds.x1) / 2, y: (bounds.y0 + bounds.y1) / 2 };
   function step() {
     if (!running) return;
+    const a = alpha;
     for (let i = 0; i < N.length; i++) {
-      const a = N[i];
+      const A = N[i];
       for (let j = i + 1; j < N.length; j++) {
-        const b = N[j];
-        let dx = b.x - a.x, dy = b.y - a.y;
+        const B = N[j];
+        let dx = B.x - A.x, dy = B.y - A.y;
         let d2 = dx * dx + dy * dy || .01;
         if (d2 > 3600) continue;                 // 60mm 截断省算力
-        const f = charge / d2;
+        const f = Math.min(charge / d2, 2.4) * a; // 斥力封顶：近距不再爆炸
         const d = Math.sqrt(d2), ux = dx / d, uy = dy / d;
-        a.vx -= f * ux; a.vy -= f * uy;
-        b.vx += f * ux; b.vy += f * uy;
+        A.vx -= f * ux; A.vy -= f * uy;
+        B.vx += f * ux; B.vy += f * uy;
       }
     }
     for (const e of E) {
       const dx = e.B.x - e.A.x, dy = e.B.y - e.A.y;
       const d = Math.hypot(dx, dy) || .01;
-      const f = (d - linkDist) * .06 * (linkStrength ? linkStrength(e) : 1);
+      const f = (d - linkDist) * .06 * (linkStrength ? linkStrength(e) : 1) * a;
       const ux = dx / d, uy = dy / d;
       if (!e.A.fixed) { e.A.vx += f * ux; e.A.vy += f * uy; }
       if (!e.B.fixed) { e.B.vx -= f * ux; e.B.vy -= f * uy; }
     }
+    let energy = 0;
     for (const n of N) {
-      n.vx += (center.x - n.x) * .0025; n.vy += (center.y - n.y) * .0025;
+      n.vx += (center.x - n.x) * .0025 * a; n.vy += (center.y - n.y) * .0025 * a;
       if (n.fixed) { n.vx = n.vy = 0; continue; }
-      n.vx *= .86; n.vy *= .86;
+      n.vx *= .82; n.vy *= .82;
+      n.vx = Math.max(-4, Math.min(4, n.vx));    // 速度封顶
+      n.vy = Math.max(-4, Math.min(4, n.vy));
       n.x = Math.min(bounds.x1, Math.max(bounds.x0, n.x + n.vx));
       n.y = Math.min(bounds.y1, Math.max(bounds.y0, n.y + n.vy));
+      energy += n.vx * n.vx + n.vy * n.vy;
     }
-    /* 硬分离：节点/标签实际间距不足时直接推开（防叠字的关键） */
+    /* 硬分离：每帧最多推开 1.2mm，避免瞬时大位移引起抖动 */
     for (let i = 0; i < N.length; i++) for (let j = i + 1; j < N.length; j++) {
-      const a = N[i], b = N[j];
-      const dx = b.x - a.x, dy = b.y - a.y;
+      const A = N[i], B = N[j];
+      const dx = B.x - A.x, dy = B.y - A.y;
       const d = Math.hypot(dx, dy) || .01;
-      const need = a.size + b.size + 5.5;
+      const need = A.size + B.size + 5.5;
       if (d < need) {
-        const push = (need - d) / 2, ux = dx / d, uy = dy / d;
-        if (!a.fixed) { a.x -= push * ux; a.y -= push * uy; }
-        if (!b.fixed) { b.x += push * ux; b.y += push * uy; }
+        const push = Math.min((need - d) / 2, 1.2), ux = dx / d, uy = dy / d;
+        if (!A.fixed) { A.x -= push * ux; A.y -= push * uy; }
+        if (!B.fixed) { B.x += push * ux; B.y += push * uy; }
       }
     }
+    alpha *= .97;                                 // 能量衰减：约 2.5 秒后趋静
+    if (alpha < .03 && energy < 3) { running = false; onTick && onTick(); return; }
     onTick && onTick();
     raf = requestAnimationFrame(step);
   }
   let onTick = null;
-  setTimeout(() => { running = false; cancelAnimationFrame(raf); }, 3500); // 收敛后停帧省电
+  stopT = setTimeout(() => { running = false; cancelAnimationFrame(raf); }, 6000); // 兜底停帧
   raf = requestAnimationFrame(step);
   return {
     onTick(fn) { onTick = fn; },
-    kick() { running = true; clearTimeout(d3like._t); d3like._t = setTimeout(() => { running = false; }, 2000); raf = requestAnimationFrame(step); }
+    kick() { alpha = Math.max(alpha, .55); running = true; clearTimeout(stopT); stopT = setTimeout(() => { running = false; }, 4000); raf = requestAnimationFrame(step); }
   };
 }
