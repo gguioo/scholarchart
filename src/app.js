@@ -6,6 +6,11 @@ import { draw as bars } from './charts/bars.js';
 import { draw as heatmap } from './charts/heatmap.js';
 import { draw as radar } from './charts/radar.js';
 import { draw as network } from './charts/network.js';
+import { draw as raincloud } from './charts/raincloud.js';
+import { draw as upset } from './charts/upset.js';
+import { draw as slope } from './charts/slope.js';
+import { draw as thematic } from './charts/thematic.js';
+import { draw as dotplot } from './charts/dotplot.js';
 import { exportSVG, exportPNG, exportPDF } from './export.js';
 
 const CHARTS = {
@@ -13,7 +18,12 @@ const CHARTS = {
   bars: { name: '柱状图', mod: bars },
   heatmap: { name: '热力图', mod: heatmap },
   radar: { name: '雷达图', mod: radar },
-  network: { name: '关联图', mod: network }
+  network: { name: '关联图', mod: network },
+  raincloud: { name: '雨云图', mod: raincloud },
+  upset: { name: 'UpSet 图', mod: upset },
+  slope: { name: '坡度图', mod: slope },
+  thematic: { name: '战略坐标图', mod: thematic },
+  dotplot: { name: '点图', mod: dotplot }
 };
 
 const SIZES = [
