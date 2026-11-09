@@ -1,0 +1,7 @@
+[
+  { "file": "trend.json", "name": "先秦诸子研究年度发文趋势", "type": "trend" },
+  { "file": "bars.json", "name": "核心概念被引量对比（含误差）", "type": "bars" },
+  { "file": "heatmap.json", "name": "诸子 × 核心概念共现矩阵", "type": "heatmap" },
+  { "file": "radar.json", "name": "研究方向多维对比", "type": "radar" },
+  { "file": "network.json", "name": "概念关联网络（可拖拽）", "type": "network" }
+]

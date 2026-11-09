@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ScholarChart · 学术图表</title>
+<meta name="description" content="学术规范的矢量图表工具：SVG 原生、PDF 矢量导出、期刊尺寸预设、淡雅配色。趋势图 / 柱状图 / 热力图 / 雷达图 / 关联图。">
+<style>
+  :root { --ink:#2a2a28; --sub:#8a8a85; --hair:#ebebeb; --bg:#fff; --line:#ebebeb }
+  * { box-sizing:border-box; margin:0 }
+  body { font:13px/1.6 -apple-system,"PingFang SC","Segoe UI","Microsoft YaHei",sans-serif; color:var(--ink); background:var(--bg) }
+  header { display:flex; align-items:baseline; gap:14px; padding:18px 26px 14px; border-bottom:1px solid var(--line) }
+  header h1 { font-size:15px; font-weight:600; letter-spacing:.5px }
+  header h1 em { font-style:normal; color:var(--sub); font-weight:400; margin-left:8px; font-size:12.5px }
+  header a { margin-left:auto; color:var(--sub); text-decoration:none; font-size:12px }
+  header a:hover { color:var(--ink) }
+  main { display:grid; grid-template-columns:56px 1fr 300px; min-height:calc(100vh - 54px) }
+  /* 左侧图表导航 */
+  nav { border-right:1px solid var(--line); padding:14px 0 }
+  .nav-btn { display:block; width:100%; padding:11px 0 10px; background:none; border:none; border-left:2px solid transparent; color:var(--sub); font:12.5px inherit; cursor:pointer; writing-mode:vertical-lr; letter-spacing:3px; margin:6px 0 }
+  .nav-btn:hover { color:var(--ink) }
+  .nav-btn.on { color:var(--ink); border-left-color:var(--ink); font-weight:600 }
+  /* 画布区 */
+  .stage { padding:34px 40px; display:flex; flex-direction:column; align-items:center; gap:18px; background:#fcfcfb }
+  .stage svg { display:block; width:min(100%, 720px); height:auto; background:#fff; box-shadow:0 0 0 1px var(--hair) }
+  .stage .hint { color:var(--sub); font-size:11.5px; letter-spacing:.4px }
+  /* 右栏设置 */
+  aside { border-left:1px solid var(--line); padding:18px 20px; overflow-y:auto }
+  aside h3 { font-size:11px; color:var(--sub); font-weight:600; letter-spacing:2px; margin:18px 0 8px; text-transform:uppercase }
+  aside h3:first-child { margin-top:2px }
+  label { display:block; color:var(--sub); font-size:11.5px; margin:7px 0 3px }
+  input[type=text], select, textarea { width:100%; border:1px solid var(--line); padding:6px 8px; font:12px/1.5 inherit; color:var(--ink); background:#fff; border-radius:0; outline:none }
+  input:focus, select:focus, textarea:focus { border-color:#b9b9b2 }
+  textarea { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; height:220px; resize:vertical; white-space:pre }
+  .row { display:flex; gap:8px } .row > * { flex:1 }
+  button.act { border:1px solid var(--ink); background:var(--ink); color:#fff; padding:7px 0; font:12.5px inherit; cursor:pointer; letter-spacing:1px }
+  button.act:hover { background:#000 }
+  button.act.ghost { background:#fff; color:var(--ink) }
+  button.act.ghost:hover { background:#f6f6f4 }
+  #dataMsg { font-size:11px; margin-top:5px; min-height:16px }
+  footer { grid-column:1 / -1; border-top:1px solid var(--line); padding:12px 26px; color:var(--sub); font-size:11.5px; display:flex; gap:18px }
+  @media (max-width:900px){ main { grid-template-columns:1fr } nav { display:flex; overflow-x:auto } .nav-btn { writing-mode:horizontal-tb; letter-spacing:0; border-left:none; border-bottom:2px solid transparent; padding:9px 12px } .nav-btn.on { border-bottom-color:var(--ink) } aside { border-left:none; border-top:1px solid var(--line) } }
+</style>
+</head>
+<body>
+<header>
+  <h1>ScholarChart<em>学术图表 · 矢量 · 期刊规范</em></h1>
+  <a href="https://github.com/" target="_blank">GitHub ↗</a>
+</header>
+<main>
+  <nav id="chartNav"></nav>
+  <section class="stage">
+    <svg id="canvas" width="170" height="110" viewBox="0 0 170 110" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="hint">SVG 原生渲染 · 悬浮查看数值 · 关联图节点可拖拽</div>
+  </section>
+  <aside>
+    <h3>样例数据</h3>
+    <select id="sampleSel"></select>
+    <h3>幅面尺寸</h3>
+    <select id="sizeSel"></select>
+    <h3>配色</h3>
+    <select id="palSel"></select>
+    <h3>标题与图注</h3>
+    <label>图题</label><input type="text" id="fTitle" placeholder="如：先秦诸子研究发文趋势">
+    <label>副题</label><input type="text" id="fSub" placeholder="如：CNKI 2015–2024">
+    <label>图号（期刊格式）</label><input type="text" id="fFig" placeholder="如：图 1">
+    <label>图注标题</label><input type="text" id="fFigTitle" placeholder="如：四子研究年度发文量">
+    <label>注（数据来源等）</label><input type="text" id="fNote" placeholder="如：数据来源：CNKI">
+    <h3>数据（JSON）</h3>
+    <textarea id="dataText" spellcheck="false"></textarea>
+    <div id="dataMsg"></div>
+    <div class="row" style="margin-top:8px"><button class="act" id="applyData">应用数据</button></div>
+    <h3>导出</h3>
+    <label>PNG 分辨率（dpi）</label><input type="text" id="pngDpi" value="600">
+    <div class="row">
+      <button class="act" id="exPDF">PDF · 矢量</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="act ghost" id="exSVG">SVG</button>
+      <button class="act ghost" id="exPNG">PNG</button>
+    </div>
+  </aside>
+</main>
+<footer><span>零运行时依赖 · 纯 SVG · MIT</span><span>PDF 导出走浏览器打印管线（Chrome/Edge 另存为 PDF 即矢量，可直接投稿）</span></footer>
+<script type="module" src="./src/app.js"></script>
+</body>
+</html>
