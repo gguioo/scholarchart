@@ -23,7 +23,7 @@ export function draw(svg, data, o = {}) {
 
   const all = S.flatMap(s => s.values);
   const Y = niceTicks(0, Math.max(...all) * 1.06 + .001, 5);
-  const box = { x: 26, y: top + 12, w: W - 48, h: H - top - 12 - footH };
+  const box = { x: 27, y: top + 12, w: W - 60, h: H - top - 12 - footH };
   const val = linear(Y.lo, Y.hi, box.y + box.h, box.y);
   const xs = T.map((_, i) => box.x + box.w * i / (T.length - 1));
 
@@ -45,7 +45,7 @@ export function draw(svg, data, o = {}) {
   /* 端点标签防叠：按目标侧排序后强制最小间距 */
   const place = (sideIdx, anchor, tx) => {
     const items = S.map(s => ({ s, y: val(s.values[sideIdx]) })).sort((a, b) => a.y - b.y);
-    const minGap = 3.4;
+    const minGap = 3.8;
     items.forEach((it, k) => {
       if (k > 0 && it.y < items[k - 1].y + minGap) it.y = items[k - 1].y + minGap;
     });
@@ -56,7 +56,7 @@ export function draw(svg, data, o = {}) {
       });
     });
   };
-  if (o.labels !== false) { place(0, 'end', box.x - 6.5); place(T.length - 1, 'start', box.x + box.w + 6.5); }
+  if (o.labels !== false) { place(0, 'end', box.x - 9.5); place(T.length - 1, 'start', box.x + box.w + 9.5); }
 
   /* 连线：升/降/平 三色 */
   S.forEach(s => {
