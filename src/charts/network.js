@@ -1,9 +1,9 @@
 /* ============ 关联网络图（力导向 · 聚类环布局 · 弧形发丝边 · 可拖拽） ============ */
 /* 边不用粗细编码：深浅 = 共现强度，弧度 = 关系远近；学派各自聚拢，互不挤压 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261111c';
-import { caption, figureNote, legend } from '../core/axis.js?v=20261111c';
-import { tip, tipHide } from '../core/tip.js?v=20261111c';
+import { el, text, INK, colors } from '../core/svg.js?v=20261111d';
+import { caption, figureNote, legend } from '../core/axis.js?v=20261111d';
+import { tip, tipHide } from '../core/tip.js?v=20261111d';
 
 /*
  * data = {
@@ -28,27 +28,18 @@ export function draw(svg, data, o = {}) {
   const deg = {};
   data.edges.forEach(e => { deg[e.a] = (deg[e.a] || 0) + 1; deg[e.b] = (deg[e.b] || 0) + 1; });
 
-  /* 学派质心：圆环分布（1 组时居中） */
+  /* 学派分组（图例用；质心不预设——每帧动态计算，聚在哪由力涌现） */
   const gset = [...new Set(data.nodes.map(n => n.group ?? 0))].sort((a, b) => a - b);
   const nG = gset.length;
-  const R = Math.min(plot.x1 - plot.x0, plot.y1 - plot.y0) * (nG > 1 ? .17 : 0);
-  const GC = {};
-  gset.forEach((g, i) => {
-    const th = (i / nG) * Math.PI * 2 - Math.PI / 2;
-    GC[g] = { x: cx + R * Math.cos(th), y: cy + R * Math.sin(th) };
-  });
 
-  /* 节点：初始位置撒在自家质心附近（收敛快、分布稳） */
-  const N = data.nodes.map(n => {
-    const g = GC[n.group ?? 0] || { x: cx, y: cy };
-    return {
-      ...n,
-      size: n.size ?? (2.3 + Math.min(3.6, (deg[n.id] || 1) * .55)),
-      x: g.x + (Math.random() - .5) * 16,
-      y: g.y + (Math.random() - .5) * 16,
-      vx: 0, vy: 0, fixed: false, rx: 3
-    };
-  });
+  /* 节点：初始位置中心附近随机撒 */
+  const N = data.nodes.map(n => ({
+    ...n,
+    size: n.size ?? (2.3 + Math.min(3.6, (deg[n.id] || 1) * .55)),
+    x: cx + (Math.random() - .5) * 30,
+    y: cy + (Math.random() - .5) * 30,
+    vx: 0, vy: 0, fixed: false, rx: 3
+  }));
   const byId = Object.fromEntries(N.map(n => [n.id, n]));
   const E = data.edges.map((e, i) => ({ ...e, i, A: byId[e.a], B: byId[e.b] })).filter(e => e.A && e.B);
   const maxW = Math.max(...E.map(e => e.w || 1), 1);
@@ -96,13 +87,12 @@ export function draw(svg, data, o = {}) {
   const hasLegend = gnames.length || nG > 1;
   const simBounds = { x0: plot.x0, x1: hasLegend ? W - 34 : plot.x1, y0: plot.y0, y1: H - footH - 16 };
   const sim = d3like(N, E, {
-    charge: -560,
+    charge: -620,
     linkRest: e => {
       const base = Math.min(plot.x1 - plot.x0, plot.y1 - plot.y0) * .1 + 11;
       return base * (.8 + .35 * (1 - (e.w || 1) / maxW));   // 弱关联略远、强关联贴近
     },
-    cluster: .03,
-    GC,
+    cluster: .065,
     bounds: simBounds
   });
 
@@ -188,13 +178,20 @@ function toSvg(svg, ev) {
   return { x: (ev.clientX - r.left) / r.width * +svg.getAttribute('width'), y: (ev.clientY - r.top) / r.height * +svg.getAttribute('height') };
 }
 
-/* 迷你力导向（零依赖：斥力 + 聚类重力 + 权重弹簧 + 向心 + alpha 衰减 + 标签防叠硬分离） */
-function d3like(N, E, { charge, linkRest, cluster, GC, bounds }) {
+/* 迷你力导向（零依赖：斥力 + 动态聚类重力 + 权重弹簧 + 向心 + alpha 衰减 + 标签防叠硬分离）
+ * 聚类引力拉向每帧实时计算的组质心（成员均值）——不预设任何位置，分组形态由力涌现 */
+function d3like(N, E, { charge, linkRest, cluster, bounds }) {
   let alpha = 1, running = true, raf = null, stopT = null;
   const center = { x: (bounds.x0 + bounds.x1) / 2, y: (bounds.y0 + bounds.y1) / 2 };
   function step() {
     if (!running) return;
     const a = alpha;
+    /* 动态组质心：本帧各组成员位置均值 */
+    const sums = {};
+    for (const n of N) {
+      const g = n.group ?? 0;
+      (sums[g] = sums[g] || [0, 0, 0]), sums[g][0] += n.x, sums[g][1] += n.y, sums[g][2]++;
+    }
     for (let i = 0; i < N.length; i++) {
       const A = N[i];
       for (let j = i + 1; j < N.length; j++) {
@@ -219,8 +216,11 @@ function d3like(N, E, { charge, linkRest, cluster, GC, bounds }) {
     }
     let energy = 0;
     for (const n of N) {
-      const g = GC[n.group ?? 0];
-      if (g) { n.vx += (g.x - n.x) * cluster * a; n.vy += (g.y - n.y) * cluster * a; }
+      const s = sums[n.group ?? 0];
+      if (s && s[2] > 1) {                       // 组内 >1 个节点才向动态质心聚拢
+        n.vx += (s[0] / s[2] - n.x) * cluster * a;
+        n.vy += (s[1] / s[2] - n.y) * cluster * a;
+      }
       n.vx += (center.x - n.x) * .002 * a; n.vy += (center.y - n.y) * .002 * a;
       if (n.fixed) { n.vx = n.vy = 0; continue; }
       n.vx *= .82; n.vy *= .82;
