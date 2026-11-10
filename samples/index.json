@@ -48,5 +48,45 @@
   "file": "dotplot.json",
   "name": "篇均被引克利夫兰点图",
   "type": "dotplot"
+ },
+ {
+  "file": "forest.json",
+  "name": "干预效应元分析森林图",
+  "type": "forest"
+ },
+ {
+  "file": "estimation.json",
+  "name": "教法差异估计图（bootstrap）",
+  "type": "estimation"
+ },
+ {
+  "file": "ridgeline.json",
+  "name": "十年发文量山脊图",
+  "type": "ridgeline"
+ },
+ {
+  "file": "blandaltman.json",
+  "name": "评分员一致性 Bland-Altman 图",
+  "type": "blandaltman"
+ },
+ {
+  "file": "kaplanmeier.json",
+  "name": "通过 HSK4 的 KM 生存曲线",
+  "type": "kaplanmeier"
+ },
+ {
+  "file": "roc.json",
+  "name": "续班判别 ROC 曲线",
+  "type": "roc"
+ },
+ {
+  "file": "qq.json",
+  "name": "成绩正态性 Q-Q 图",
+  "type": "qq"
+ },
+ {
+  "file": "stl.json",
+  "name": "月度发文量时序分解",
+  "type": "stl"
  }
 ]

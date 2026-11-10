@@ -34,3 +34,31 @@ export function smoothPath(pts, tension = 0.85) {
   }
   return d;
 }
+
+/* ============ 高斯核密度估计（Silverman 带宽） ============ */
+export function kde(values, grid, h) {
+  const n = values.length;
+  if (n < 2) return grid.map(() => 0);
+  const m = values.reduce((a, b) => a + b, 0) / n;
+  const sd = Math.sqrt(values.reduce((a, b) => a + (b - m) ** 2, 0) / (n - 1) || 1e-9);
+  const s = [...values].sort((a, b) => a - b);
+  const q = p => s[Math.min(s.length - 1, Math.max(0, Math.round(p * (s.length - 1))))];
+  const iqr = q(.75) - q(.25);
+  if (!h || h <= 0) h = .9 * Math.min(sd, iqr > 0 ? iqr / 1.34 : sd) * Math.pow(n, -.2) || 1;
+  return grid.map(t => {
+    let acc = 0;
+    for (const v of values) { const u = (t - v) / h; acc += Math.exp(-.5 * u * u); }
+    return acc / (n * h * Math.sqrt(2 * Math.PI));
+  });
+}
+
+/* 确定性伪随机（bootstrap 抽样可复现） */
+export function mulberry32(seed = 7) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}

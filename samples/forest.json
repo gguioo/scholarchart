@@ -1,0 +1,57 @@
+{
+ "type": "forest",
+ "data": {
+  "studies": [
+   {
+    "name": "Li 2019",
+    "effect": 0.42,
+    "se": 0.14
+   },
+   {
+    "name": "Wang 2020",
+    "effect": 0.68,
+    "se": 0.21
+   },
+   {
+    "name": "Chen 2021",
+    "effect": 0.21,
+    "se": 0.11
+   },
+   {
+    "name": "Zhao 2022",
+    "effect": 0.55,
+    "se": 0.18
+   },
+   {
+    "name": "Liu 2020",
+    "effect": 0.09,
+    "se": 0.12
+   },
+   {
+    "name": "Sun 2023",
+    "effect": 0.74,
+    "se": 0.24
+   },
+   {
+    "name": "Zhou 2021",
+    "effect": 0.33,
+    "se": 0.09
+   },
+   {
+    "name": "Wu 2023",
+    "effect": 0.48,
+    "se": 0.16
+   }
+  ],
+  "x": {
+   "label": "标准化均差 SMD（95% CI）"
+  }
+ },
+ "opts": {
+  "title": "沉浸式教学法对词汇习得的干预效应（k = 8）",
+  "subtitle": "方块面积 ∝ 逆方差权重 · 菱形 = 合并效应 · 虚线 = 无效应线",
+  "figLabel": "图 11",
+  "figTitle": "干预效应森林图",
+  "note": "森林图（元分析）：随机效应 DerSimonian-Laird 估计；异质性 Q / I² / τ² 见图下"
+ }
+}

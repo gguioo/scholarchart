@@ -11,6 +11,14 @@ import { draw as upset } from './charts/upset.js';
 import { draw as slope } from './charts/slope.js';
 import { draw as thematic } from './charts/thematic.js';
 import { draw as dotplot } from './charts/dotplot.js';
+import { draw as forest } from './charts/forest.js';
+import { draw as estimation } from './charts/estimation.js';
+import { draw as ridgeline } from './charts/ridgeline.js';
+import { draw as blandaltman } from './charts/blandaltman.js';
+import { draw as kaplanmeier } from './charts/kaplanmeier.js';
+import { draw as roc } from './charts/roc.js';
+import { draw as qq } from './charts/qq.js';
+import { draw as stl } from './charts/stl.js';
 import { exportSVG, exportPNG, exportPDF } from './export.js';
 
 const CHARTS = {
@@ -23,7 +31,15 @@ const CHARTS = {
   upset: { name: 'UpSet 图', mod: upset },
   slope: { name: '坡度图', mod: slope },
   thematic: { name: '战略坐标图', mod: thematic },
-  dotplot: { name: '点图', mod: dotplot }
+  dotplot: { name: '点图', mod: dotplot },
+  forest: { name: '森林图', mod: forest },
+  estimation: { name: '估计图', mod: estimation },
+  ridgeline: { name: '山脊图', mod: ridgeline },
+  blandaltman: { name: '一致性图', mod: blandaltman },
+  kaplanmeier: { name: '生存曲线', mod: kaplanmeier },
+  roc: { name: 'ROC 曲线', mod: roc },
+  qq: { name: 'Q-Q 图', mod: qq },
+  stl: { name: '时序分解', mod: stl }
 };
 
 const SIZES = [
