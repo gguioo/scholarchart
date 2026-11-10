@@ -31,7 +31,7 @@ export function draw(svg, data, o = {}) {
   /* 学派质心：圆环分布（1 组时居中） */
   const gset = [...new Set(data.nodes.map(n => n.group ?? 0))].sort((a, b) => a - b);
   const nG = gset.length;
-  const R = Math.min(plot.x1 - plot.x0, plot.y1 - plot.y0) * (nG > 1 ? .3 : 0);
+  const R = Math.min(plot.x1 - plot.x0, plot.y1 - plot.y0) * (nG > 1 ? .17 : 0);
   const GC = {};
   gset.forEach((g, i) => {
     const th = (i / nG) * Math.PI * 2 - Math.PI / 2;
@@ -96,12 +96,12 @@ export function draw(svg, data, o = {}) {
   const hasLegend = gnames.length || nG > 1;
   const simBounds = { x0: plot.x0, x1: hasLegend ? W - 34 : plot.x1, y0: plot.y0, y1: H - footH - 16 };
   const sim = d3like(N, E, {
-    charge: -640,
+    charge: -560,
     linkRest: e => {
-      const base = Math.min(plot.x1 - plot.x0, plot.y1 - plot.y0) * .16 + 14;
-      return base * (.7 + .55 * (1 - (e.w || 1) / maxW));   // 弱关联拉远 → 学派分开
+      const base = Math.min(plot.x1 - plot.x0, plot.y1 - plot.y0) * .1 + 11;
+      return base * (.8 + .35 * (1 - (e.w || 1) / maxW));   // 弱关联略远、强关联贴近
     },
-    cluster: .014,
+    cluster: .03,
     GC,
     bounds: simBounds
   });
