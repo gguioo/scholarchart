@@ -1,10 +1,10 @@
 /* ============ Bland-Altman 图（两种测量的一致性：Tukey 均值-差图） ============ */
 /* Bland & Altman 1986, The Lancet —— 方法学比对/评分员信度的标准图 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261111g';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261111g';
-import { niceTicks, linear } from '../core/scale.js?v=20261111g';
-import { tip, tipHide } from '../core/tip.js?v=20261111g';
+import { el, text, INK, colors } from '../core/svg.js?v=20261111h';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261111h';
+import { niceTicks, linear } from '../core/scale.js?v=20261111h';
+import { tip, tipHide } from '../core/tip.js?v=20261111h';
 
 /*
  * data = {

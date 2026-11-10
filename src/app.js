@@ -1,24 +1,24 @@
 /* ============ 应用外壳：图表切换 / 尺寸预设 / 配色 / 数据编辑 / 导出 ============ */
 
-import { PAL, PALETTES } from './core/svg.js?v=20261111g';
-import { draw as trend } from './charts/trend.js?v=20261111g';
-import { draw as bars } from './charts/bars.js?v=20261111g';
-import { draw as heatmap } from './charts/heatmap.js?v=20261111g';
-import { draw as radar } from './charts/radar.js?v=20261111g';
-import { draw as raincloud } from './charts/raincloud.js?v=20261111g';
-import { draw as upset } from './charts/upset.js?v=20261111g';
-import { draw as slope } from './charts/slope.js?v=20261111g';
-import { draw as thematic } from './charts/thematic.js?v=20261111g';
-import { draw as dotplot } from './charts/dotplot.js?v=20261111g';
-import { draw as forest } from './charts/forest.js?v=20261111g';
-import { draw as estimation } from './charts/estimation.js?v=20261111g';
-import { draw as ridgeline } from './charts/ridgeline.js?v=20261111g';
-import { draw as blandaltman } from './charts/blandaltman.js?v=20261111g';
-import { draw as kaplanmeier } from './charts/kaplanmeier.js?v=20261111g';
-import { draw as roc } from './charts/roc.js?v=20261111g';
-import { draw as qq } from './charts/qq.js?v=20261111g';
-import { draw as stl } from './charts/stl.js?v=20261111g';
-import { exportSVG, exportPNG, exportPDF } from './export.js?v=20261111g';
+import { PAL, PALETTES, FONT, setFont } from './core/svg.js?v=20261111h';
+import { draw as trend } from './charts/trend.js?v=20261111h';
+import { draw as bars } from './charts/bars.js?v=20261111h';
+import { draw as heatmap } from './charts/heatmap.js?v=20261111h';
+import { draw as radar } from './charts/radar.js?v=20261111h';
+import { draw as raincloud } from './charts/raincloud.js?v=20261111h';
+import { draw as upset } from './charts/upset.js?v=20261111h';
+import { draw as slope } from './charts/slope.js?v=20261111h';
+import { draw as thematic } from './charts/thematic.js?v=20261111h';
+import { draw as dotplot } from './charts/dotplot.js?v=20261111h';
+import { draw as forest } from './charts/forest.js?v=20261111h';
+import { draw as estimation } from './charts/estimation.js?v=20261111h';
+import { draw as ridgeline } from './charts/ridgeline.js?v=20261111h';
+import { draw as blandaltman } from './charts/blandaltman.js?v=20261111h';
+import { draw as kaplanmeier } from './charts/kaplanmeier.js?v=20261111h';
+import { draw as roc } from './charts/roc.js?v=20261111h';
+import { draw as qq } from './charts/qq.js?v=20261111h';
+import { draw as stl } from './charts/stl.js?v=20261111h';
+import { exportSVG, exportPNG, exportPDF } from './export.js?v=20261111h';
 
 const CHARTS = {
   trend: { name: '趋势图', mod: trend },
@@ -57,7 +57,7 @@ const state = {
 const $ = s => document.querySelector(s);
 
 async function loadSamples() {
-  const list = await (await fetch('./samples/index.json?v=20261111g')).json();
+  const list = await (await fetch('./samples/index.json?v=20261111h')).json();
   const sel = $('#sampleSel');
   sel.innerHTML = '';
   for (const s of list) {
@@ -72,7 +72,7 @@ async function loadSamples() {
 }
 
 async function loadSample(file, type, resetType) {
-  const j = await (await fetch('./samples/' + file + '?v=20261111g')).json();
+  const j = await (await fetch('./samples/' + file + '?v=20261111h')).json();
   if (j.type && CHARTS[j.type]) { state.type = j.type; autoSize(j.type); }
   state.data = j.data;
   state.meta = { ...j.opts };
@@ -143,6 +143,11 @@ function buildUI() {
   for (const p in PALETTES) { const o = document.createElement('option'); o.value = p; o.textContent = { danli: '淡雅·综合', qing: '青瓷·冷调', mono: '青墨·单色系', nuan: '暖陶·低饱和' }[p]; pSel.appendChild(o); }
   pSel.onchange = () => { PAL.name = pSel.value; render(); };
 
+  /* 字体风格（衬线/无衬线，记忆选择） */
+  const fSel = $('#fontSel');
+  fSel.value = FONT.cur;
+  fSel.onchange = () => { setFont(fSel.value); render(); };
+
   /* 标题图注实时联动 */
   ['#fTitle', '#fSub', '#fFig', '#fFigTitle', '#fNote'].forEach(id =>
     $(id).addEventListener('input', render));
@@ -163,7 +168,7 @@ function buildUI() {
   };
 
   /* 导出 */
-  $('#exSVG').onclick = () => exportSVG($('#canvas'));
+  $('#exSVG').onclick = () => exportSVG($('#canvas'), $('#outlineChk').checked);
   $('#exPNG').onclick = () => exportPNG($('#canvas'), +($('#pngDpi').value || 600));
   $('#exPDF').onclick = () => exportPDF($('#canvas'));
 }
@@ -172,7 +177,7 @@ buildUI();
 loadSamples().catch(async e => {
   /* file:// 直开时 fetch 失败 → 内嵌兜底数据 */
   console.warn(e);
-  const { FALLBACK } = await import('./fallback.js?v=20261111g');
+  const { FALLBACK } = await import('./fallback.js?v=20261111h');
   state.type = 'trend'; state.data = FALLBACK.data; state.meta = { ...FALLBACK.opts };
   syncForm(); render();
 });

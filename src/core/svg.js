@@ -15,7 +15,7 @@ export function el(name, attrs = {}, parent = null) {
 export function text(parent, x, y, str, attrs = {}) {
   const t = el('text', {
     x, y,
-    'font-family': attrs.mono ? "Georgia, 'Times New Roman', serif" : FONT.serif,
+    'font-family': attrs.mono ? FONT.mono : FONT.stack(),
     'font-size': attrs.size ?? 2.6,
     fill: attrs.fill ?? INK.base,
     'text-anchor': attrs.anchor ?? 'start',
@@ -26,8 +26,20 @@ export function text(parent, x, y, str, attrs = {}) {
   return t;
 }
 
-/* 字体与墨色系统（单位 mm） */
-export const FONT = { serif: "'Noto Serif SC','Source Han Serif SC','Songti SC','SimSun',Georgia,serif" };
+/* 字体与墨色系统（单位 mm）
+ * 内置子集字体（OFL 思源宋体/黑体，按常用字裁剪）置于字栈首位，
+ * 系统缺失时逐级回退；转曲导出与所见渲染保持同一字形来源。 */
+export const FONT = {
+  serif: "'ScholarChart Serif','Noto Serif SC','Source Han Serif SC','Songti SC','SimSun',Georgia,serif",
+  sans: "'ScholarChart Sans',Arial,'Helvetica Neue',Helvetica,'PingFang SC','Microsoft YaHei',sans-serif",
+  mono: "Georgia,'Times New Roman',serif",
+  cur: (function () { try { return localStorage.getItem('scFont') === 'sans' ? 'sans' : 'serif'; } catch (e) { return 'serif'; } })(),
+  stack() { return this[this.cur]; }
+};
+export function setFont(f) {
+  FONT.cur = f === 'sans' ? 'sans' : 'serif';
+  try { localStorage.setItem('scFont', FONT.cur); } catch (e) {}
+}
 export const INK = {
   base: '#2A2A28',      // 正文墨
   soft: '#8A8A85',      // 次要信息
