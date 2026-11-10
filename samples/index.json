@@ -20,9 +20,9 @@
   "type": "radar"
  },
  {
-  "file": "network.json",
-  "name": "概念关联网络（可拖拽）",
-  "type": "network"
+  "file": "chord.json",
+  "name": "概念共现和弦图",
+  "type": "chord"
  },
  {
   "file": "raincloud.json",
