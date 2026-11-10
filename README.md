@@ -2,6 +2,8 @@
 
 > 学术规范的矢量图表工具 —— 严谨如期刊，干净如现代设计。
 
+**[🌐 在线使用（无需安装）：https://gguioo.github.io/scholarchart/](https://gguioo.github.io/scholarchart/)**
+
 为论文与科研场景设计的纯前端图表引擎：**原生 SVG 渲染、矢量 PDF 导出、期刊幅面预设、色盲安全淡雅配色**，零运行时依赖，双击 `index.html` 即用。
 
 ![ScholarChart](assets/full_app.png)
@@ -43,6 +45,12 @@ ScholarChart 站在断层中间：**把期刊规范做成默认值，把淡雅�
 | 雷达图 | 多维方法/能力对比 |
 | 关联图 | 力导向概念网络、可拖拽布局、防叠字标签 |
 
+![趋势图](assets/final_trend.png)
+![柱状图](assets/final_bars.png)
+![热力图](assets/final_heatmap.png)
+![雷达图](assets/final_radar.png)
+![关联图](assets/final_network.png)
+
 **新一代统计图（第一批）**——近年统计绘图文献里取代老图型的现代方案：
 
 | 类型 | 取代谁 | 出处 |
@@ -52,6 +60,12 @@ ScholarChart 站在断层中间：**把期刊规范做成默认值，把淡雅�
 | 坡度图 | 分组柱状图（前后对比） | Tufte：多时间点排名/数值流转，两端标签自动防叠 |
 | 战略坐标图 | ——（文献计量专属） | Cobo et al. 2011：密度 × 向心性四象限定位研究主题，气泡 ∝ 文献量，标签防碰撞 |
 | 点图 | 分组柱状图 | Cleveland & McGill 1984：位置编码感知精度 > 长度编码 |
+
+![雨云图](assets/final_raincloud.png)
+![UpSet 图](assets/final_upset.png)
+![坡度图](assets/final_slope.png)
+![战略坐标图](assets/final_thematic.png)
+![点图](assets/final_dotplot.png)
 
 **现代统计学图型（第二批）**——不换皮，真算法：
 
@@ -66,24 +80,26 @@ ScholarChart 站在断层中间：**把期刊规范做成默认值，把淡雅�
 | Q-Q 图 | 分布正态性检查 | Blom 校正经验分位数 vs Φ⁻¹（A&S 26.2.23），R qqline 法参考线 |
 | 时序分解 | 趋势-季节-残差 | 经典加法分解（statsmodels decompose 呈现版），四联面板 |
 
-![雨云图](assets/final_raincloud.png)
-![UpSet 图](assets/final_upset.png)
-![坡度图](assets/final_slope.png)
-![战略坐标图](assets/final_thematic.png)
-![点图](assets/final_dotplot.png)
 ![森林图](assets/final_forest.png)
+![估计图](assets/final_estimation.png)
+![山脊图](assets/final_ridgeline.png)
+![一致性图](assets/final_blandaltman.png)
 ![生存曲线](assets/final_kaplanmeier.png)
 ![ROC 曲线](assets/final_roc.png)
+![Q-Q 图](assets/final_qq.png)
+![时序分解](assets/final_stl.png)
 
 ## 快速开始
 
 ```bash
-git clone https://github.com/你的用户名/scholarchart.git
+git clone https://github.com/gguioo/scholarchart.git
 cd scholarchart
 # 方式一：直接双击 index.html（零依赖）
 # 方式二：本地服务（推荐，样例数据全量加载）
 python3 -m http.server 8000
 ```
+
+或直接用在线版：<https://gguioo.github.io/scholarchart/>（功能与本地版完全一致）。
 
 右侧面板：选样例 → 改幅面/配色 → 编辑 JSON 数据 → 导出。
 
@@ -135,7 +151,7 @@ scholarchart/
 │   ├── fallback.js     # file:// 直开兜底
 │   ├── core/           # 坐标系、比例尺、配色、提示
 │   └── charts/         # 十八个图表引擎（每个一个文件）
-├── samples/            # 十套样例数据（JSON）
+├── samples/            # 十八套样例数据（JSON）
 └── assets/             # 截图
 ```
 
