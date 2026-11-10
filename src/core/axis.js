@@ -1,8 +1,8 @@
 /* ============ 学术坐标系组件 ============ */
 /* 只画左+下轴刺（期刊惯例）、向内小刻度、发丝网格；右侧留白 */
 
-import { el, text, INK } from './svg.js';
-import { niceTicks, linear } from './scale.js';
+import { el, text, INK } from './svg.js?v=20261111c';
+import { niceTicks, linear } from './scale.js?v=20261111c';
 
 /*
  * 在 g 容器内建立学术坐标框架

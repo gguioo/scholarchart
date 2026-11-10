@@ -1,9 +1,9 @@
 /* ============ 关联网络图（力导向 · 聚类环布局 · 弧形发丝边 · 可拖拽） ============ */
 /* 边不用粗细编码：深浅 = 共现强度，弧度 = 关系远近；学派各自聚拢，互不挤压 */
 
-import { el, text, INK, colors } from '../core/svg.js';
-import { caption, figureNote, legend } from '../core/axis.js';
-import { tip, tipHide } from '../core/tip.js';
+import { el, text, INK, colors } from '../core/svg.js?v=20261111c';
+import { caption, figureNote, legend } from '../core/axis.js?v=20261111c';
+import { tip, tipHide } from '../core/tip.js?v=20261111c';
 
 /*
  * data = {
