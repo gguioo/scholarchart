@@ -1,92 +1,87 @@
 [
- {
-  "file": "trend.json",
-  "name": "先秦诸子研究年度发文趋势",
-  "type": "trend"
- },
- {
-  "file": "bars.json",
-  "name": "核心概念被引量对比（含误差）",
-  "type": "bars"
- },
- {
-  "file": "heatmap.json",
-  "name": "诸子 × 核心概念共现矩阵",
-  "type": "heatmap"
- },
- {
-  "file": "radar.json",
-  "name": "研究方向多维对比",
-  "type": "radar"
- },
- {
-  "type": "network",
-  "file": "network.json",
-  "name": "概念关联网络（可拖拽）"
- },
- {
-  "file": "raincloud.json",
-  "name": "被引量分布雨云图（原始数据+分布）",
-  "type": "raincloud"
- },
- {
-  "file": "upset.json",
-  "name": "概念集合交集 UpSet 图",
-  "type": "upset"
- },
- {
-  "file": "slope.json",
-  "name": "十年发文量坡度图",
-  "type": "slope"
- },
- {
-  "file": "thematic.json",
-  "name": "研究主题战略坐标图",
-  "type": "thematic"
- },
- {
-  "file": "dotplot.json",
-  "name": "篇均被引克利夫兰点图",
-  "type": "dotplot"
- },
- {
-  "file": "forest.json",
-  "name": "干预效应元分析森林图",
-  "type": "forest"
- },
- {
-  "file": "estimation.json",
-  "name": "教法差异估计图（bootstrap）",
-  "type": "estimation"
- },
- {
-  "file": "ridgeline.json",
-  "name": "十年发文量山脊图",
-  "type": "ridgeline"
- },
- {
-  "file": "blandaltman.json",
-  "name": "评分员一致性 Bland-Altman 图",
-  "type": "blandaltman"
- },
- {
-  "file": "kaplanmeier.json",
-  "name": "通过 HSK4 的 KM 生存曲线",
-  "type": "kaplanmeier"
- },
- {
-  "file": "roc.json",
-  "name": "续班判别 ROC 曲线",
-  "type": "roc"
- },
- {
-  "file": "qq.json",
-  "name": "成绩正态性 Q-Q 图",
-  "type": "qq"
- },
- {
-  "file": "stl.json",
-  "name": "月度发文量时序分解",
-  "type": "stl"
- }
+  {
+    "file": "trend.json",
+    "name": "先秦诸子研究年度发文趋势",
+    "type": "trend"
+  },
+  {
+    "file": "bars.json",
+    "name": "核心概念被引量对比（含误差）",
+    "type": "bars"
+  },
+  {
+    "file": "heatmap.json",
+    "name": "诸子 × 核心概念共现矩阵",
+    "type": "heatmap"
+  },
+  {
+    "file": "radar.json",
+    "name": "研究方向多维对比",
+    "type": "radar"
+  },
+  {
+    "file": "raincloud.json",
+    "name": "被引量分布雨云图（原始数据+分布）",
+    "type": "raincloud"
+  },
+  {
+    "file": "upset.json",
+    "name": "概念集合交集 UpSet 图",
+    "type": "upset"
+  },
+  {
+    "file": "slope.json",
+    "name": "十年发文量坡度图",
+    "type": "slope"
+  },
+  {
+    "file": "thematic.json",
+    "name": "研究主题战略坐标图",
+    "type": "thematic"
+  },
+  {
+    "file": "dotplot.json",
+    "name": "篇均被引克利夫兰点图",
+    "type": "dotplot"
+  },
+  {
+    "file": "forest.json",
+    "name": "干预效应元分析森林图",
+    "type": "forest"
+  },
+  {
+    "file": "estimation.json",
+    "name": "教法差异估计图（bootstrap）",
+    "type": "estimation"
+  },
+  {
+    "file": "ridgeline.json",
+    "name": "十年发文量山脊图",
+    "type": "ridgeline"
+  },
+  {
+    "file": "blandaltman.json",
+    "name": "评分员一致性 Bland-Altman 图",
+    "type": "blandaltman"
+  },
+  {
+    "file": "kaplanmeier.json",
+    "name": "通过 HSK4 的 KM 生存曲线",
+    "type": "kaplanmeier"
+  },
+  {
+    "file": "roc.json",
+    "name": "续班判别 ROC 曲线",
+    "type": "roc"
+  },
+  {
+    "file": "qq.json",
+    "name": "成绩正态性 Q-Q 图",
+    "type": "qq"
+  },
+  {
+    "file": "stl.json",
+    "name": "月度发文量时序分解",
+    "type": "stl"
+  }
 ]

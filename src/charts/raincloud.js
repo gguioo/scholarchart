@@ -1,10 +1,10 @@
 /* ============ 雨云图（半小提琴 + 箱线 + 原始散点：新一代柱状图替身） ============ */
 /* Allen et al. 2019, Raincloud plots: a multi-platform tool... */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261111f';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261111f';
-import { niceTicks, linear } from '../core/scale.js?v=20261111f';
-import { tip, tipHide } from '../core/tip.js?v=20261111f';
+import { el, text, INK, colors } from '../core/svg.js?v=20261111g';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261111g';
+import { niceTicks, linear } from '../core/scale.js?v=20261111g';
+import { tip, tipHide } from '../core/tip.js?v=20261111g';
 
 /*
  * data = {

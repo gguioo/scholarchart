@@ -16,6 +16,8 @@ sed -i "s|>v[A-Za-z0-9-]*</div>|>v$V</div>|g" index.html
 # 4) 入口脚本
 sed -E -i "s|(src=\"\./src/app\.js)(\?v=[A-Za-z0-9-]+)?\"|src=\"./src/app.js?v=$V\"|" index.html
 # 5) 样例 JSON 加载带版本
-sed -i "s|fetch('./samples/index.json\\?v=[A-Za-z0-9-]*')|fetch('./samples/index.json?v=$V')|" src/app.js
-sed -i "s|fetch('./samples/' + file + '\\?v=[A-Za-z0-9-]*')|fetch('./samples/' + file + '?v=$V')|" src/app.js
+sed -i "s|fetch('./samples/index.json\\?v=[A-Za-z0-9-]*')|fetch('./samples/index.json')|" src/app.js
+sed -i "s|fetch('./samples/' + file + '\\?v=[A-Za-z0-9-]*')|fetch('./samples/' + file + '')|" src/app.js
+sed -i "s|fetch('./samples/index.json')|fetch('./samples/index.json?v=$V')|" src/app.js
+sed -i "s|fetch('./samples/' + file + '')|fetch('./samples/' + file + '?v=$V')|" src/app.js
 echo "bumped -> $V"

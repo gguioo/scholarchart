@@ -1,10 +1,10 @@
 /* ============ Q-Q 图（分布正态性检查：样本分位数 vs 理论分位数） ============ */
 /* 检查分布假设的第一图 —— 点贴线 = 正态 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261111f';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261111f';
-import { niceTicks, linear } from '../core/scale.js?v=20261111f';
-import { tip, tipHide } from '../core/tip.js?v=20261111f';
+import { el, text, INK, colors } from '../core/svg.js?v=20261111g';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261111g';
+import { niceTicks, linear } from '../core/scale.js?v=20261111g';
+import { tip, tipHide } from '../core/tip.js?v=20261111g';
 
 /* 标准正态分位数函数 Φ⁻¹（A&S 26.2.23，|ε| < 4.5e-4，画图足够） */
 const qnorm = p => {
@@ -38,12 +38,13 @@ export function draw(svg, data, o = {}) {
   const interp = p => { const x = p * (n - 1), k = Math.floor(x), f = x - k; return V[k] + f * (V[Math.min(n - 1, k + 1)] - V[k]); };
   const dq1 = interp(.25), dq3 = interp(.75), tq1 = qnorm(.25), tq3 = qnorm(.75);
   const slope = (dq3 - dq1) / (tq3 - tq1), icept = dq1 - slope * tq1;
-  const sd = Math.sqrt(V.reduce((a, b) => a + (b - V.reduce((x, y) => x + y, 0) / n) ** 2, 0) / (n - 1));
+  const mean = V.reduce((a, b) => a + b, 0) / n;
+  const sd = n > 1 ? Math.sqrt(V.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1)) : 0;
   const r = (() => {                                 // 拟合相关（正态性度量）
     const mt = th.reduce((a, b) => a + b, 0) / n, mv = V.reduce((a, b) => a + b, 0) / n;
     let st = 0, sv = 0, sxy = 0;
     V.forEach((v, i) => { st += (th[i] - mt) ** 2; sv += (v - mv) ** 2; sxy += (th[i] - mt) * (v - mv); });
-    return sxy / Math.sqrt(st * sv);
+    return st && sv ? sxy / Math.sqrt(st * sv) : 0;
   })();
 
   /* 轴（边点留出整圆空间） */
@@ -71,14 +72,14 @@ export function draw(svg, data, o = {}) {
   /* 样本点 */
   V.forEach((v, i) => {
     const c = el('circle', { cx: valX(th[i]).toFixed(2), cy: valY(v).toFixed(2), r: .68, fill: cs[0], 'fill-opacity': .65, cursor: 'pointer' }, svg);
-    const msg = `<b>样本第 ${(i + 1)} / ${n} 位</b><br>样本值 ${fmt(v)} · 理论 z = ${th[i].toFixed(2)}<br>参考线预测 ${fmt(+(icept + slope * th[i]).toFixed(1))} · 残差 ${fmt(+((v - icept - slope * th[i]) / sd).toFixed(2))} SD`;
+    const msg = `<b>样本第 ${(i + 1)} / ${n} 位</b><br>样本值 ${fmt(v)} · 理论 z = ${th[i].toFixed(2)}<br>参考线预测 ${fmt(+(icept + slope * th[i]).toFixed(1))} · 残差 ${fmt(+((v - icept - slope * th[i]) / (sd || 1)).toFixed(2))} SD`;
     c.addEventListener('pointerenter', ev => tip(msg, ev));
     c.addEventListener('pointermove', ev => tip(msg, ev));
     c.addEventListener('pointerleave', tipHide);
   });
 
   /* 角标 */
-  text(svg, box.x + 3, box.y + 4.5, `n = ${n} · r = ${r.toFixed(3)} · μ = ${fmt(+V.reduce((a, b) => a + b, 0).toFixed(1))} · σ = ${fmt(+sd.toFixed(1))}`, {
+  text(svg, box.x + 3, box.y + 4.5, `n = ${n} · r = ${n > 1 ? r.toFixed(3) : '—'} · μ = ${fmt(+mean.toFixed(1))} · σ = ${n > 1 ? fmt(+sd.toFixed(1)) : '—'}`, {
     size: 2.4, fill: INK.base,
     extra: { 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': .7 }
   });

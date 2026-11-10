@@ -36,6 +36,7 @@ export function exportPDF(svg) {
   clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   const src = new XMLSerializer().serializeToString(clone);
   const fw = window.open('', '_blank');
+  if (!fw) { alert('PDF 预览窗口被浏览器拦截，请允许本站弹窗后重试'); return; }
   fw.document.write(`<!DOCTYPE html><html><head><title>${document.title}</title><style>
     @page { size: ${w}mm ${h}mm; margin: 0 }
     html, body { margin: 0; padding: 0 }

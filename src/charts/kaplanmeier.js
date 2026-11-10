@@ -1,10 +1,10 @@
 /* ============ Kaplan-Meier 生存曲线（时间到事件 + 删失 + log-rank + 风险表） ============ */
 /* Kaplan & Meier 1958 —— 生存分析的标准图， Greenwood CI · Mantel-Haenszel log-rank */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261111f';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261111f';
-import { niceTicks, linear } from '../core/scale.js?v=20261111f';
-import { tip, tipHide } from '../core/tip.js?v=20261111f';
+import { el, text, INK, colors } from '../core/svg.js?v=20261111g';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261111g';
+import { niceTicks, linear } from '../core/scale.js?v=20261111g';
+import { tip, tipHide } from '../core/tip.js?v=20261111g';
 
 /* 误差函数补（log-rank p 值用， A&S 7.1.26） */
 const erfc = x => {
