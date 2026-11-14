@@ -1,10 +1,10 @@
 /* ============ 时间序列分解（观测 = 趋势 + 季节 + 残差，经典分解） ============ */
 /* 四联面板：趋势漂移、季节模式、残差白噪——时间序列的第一诊断图 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114b';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114b';
-import { niceTicks, linear, smoothPath } from '../core/scale.js?v=20261114b';
-import { tip, tipHide } from '../core/tip.js?v=20261114b';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114c';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114c';
+import { niceTicks, linear, smoothPath } from '../core/scale.js?v=20261114c';
+import { tip, tipHide } from '../core/tip.js?v=20261114c';
 
 /*
  * data = { t: [0..n-1 序号或年月数值], values: [..], period: 12 }

@@ -1,8 +1,8 @@
 /* ============ 共现网络图（Co-occurrence Network，VOSviewer 式） ============ */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114b';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114b';
-import { tip, tipHide } from '../core/tip.js?v=20261114b';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114c';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114c';
+import { tip, tipHide } from '../core/tip.js?v=20261114c';
 
 /*
  * data = {
@@ -12,7 +12,7 @@ import { tip, tipHide } from '../core/tip.js?v=20261114b';
  * }
  * o = {
  *   labels: 30,          // 只给权重最大的 N 个节点标标签（0 = 全不标）
- *   edgeOpacity: .05,    // 边透明度（高密度网络建议 ≤.08）
+ *   edgeOpacity: .1,     // 边透明度（0 = 隐藏；节点多时建议 .06–.15）
  *   iterations: 260      // 力模拟迭代数
  * }
  *
@@ -162,8 +162,8 @@ export function draw(svg, data, o = {}) {
   const rMax = n > 400 ? 3.6 : n > 150 ? 4.4 : 5.2;
   const rOf = w => .45 + (rMax - .45) * Math.sqrt(w / wmax);
 
-  /* ---- 边（极淡，高密度时不喧宾夺主） ---- */
-  const eOp = o.edgeOpacity ?? .05;
+  /* ---- 边（淡线保留结构感，透明度可用 opts.edgeOpacity 调） ---- */
+  const eOp = o.edgeOpacity ?? .1;
   const gE = el('g', {}, svg);
   for (const [s, t, w] of E) {
     if (s < 0 || t < 0 || s >= n || t >= n || s === t) continue;
