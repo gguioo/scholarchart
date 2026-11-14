@@ -1,10 +1,10 @@
 /* ============ 战略坐标图（密度 × 向心性四象限：文献计量主题定位） ============ */
 /* Cobo et al. 2011, bibliometrix thematic map */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114d';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114d';
-import { niceTicks, linear } from '../core/scale.js?v=20261114d';
-import { tip, tipHide } from '../core/tip.js?v=20261114d';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114e';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114e';
+import { niceTicks, linear } from '../core/scale.js?v=20261114e';
+import { tip, tipHide } from '../core/tip.js?v=20261114e';
 
 /*
  * data = {
