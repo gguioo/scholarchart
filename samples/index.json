@@ -93,5 +93,10 @@
     "file": "network.json",
     "name": "数字人文关键词共现网络",
     "type": "network"
+  },
+  {
+    "file": "river.json",
+    "name": "敦煌学主题河流",
+    "type": "river"
   }
 ]

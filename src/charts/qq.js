@@ -1,10 +1,10 @@
 /* ============ Q-Q 图（分布正态性检查：样本分位数 vs 理论分位数） ============ */
 /* 检查分布假设的第一图 —— 点贴线 = 正态 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114c';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114c';
-import { niceTicks, linear } from '../core/scale.js?v=20261114c';
-import { tip, tipHide } from '../core/tip.js?v=20261114c';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114d';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114d';
+import { niceTicks, linear } from '../core/scale.js?v=20261114d';
+import { tip, tipHide } from '../core/tip.js?v=20261114d';
 
 /* 标准正态分位数函数 Φ⁻¹（A&S 26.2.23，|ε| < 4.5e-4，画图足够） */
 const qnorm = p => {

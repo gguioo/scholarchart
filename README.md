@@ -59,6 +59,7 @@ ScholarChart 站在断层中间：**把期刊规范做成默认值，把淡雅�
 | 点图 | 分组柱状图 | Cleveland & McGill 1984：位置编码感知精度 > 长度编码 |
 | 主题趋势图 | ——（文献计量专属） | Biblioshiny Trend Topic：关键词年度跨度横线 + 峰值年圆点，圆点面积 ∝ 词频 |
 | 共现网络图 | ——（文献计量专属） | VOSviewer 式：FR 力导向布局（网格加速）+ 标签传播社区着色，节点面积 ∝ 权重，仅标前 N 大节点，边极淡 |
+| 主题河流图 | 堆叠面积图 | Biblioshiny Theme River：中心对称堆叠 + Catmull-Rom 平滑，图例独立成行不压图，河流宽窄 = 年度热度 |
 
 ![雨云图](assets/final_raincloud.png)
 ![UpSet 图](assets/final_upset.png)
@@ -67,6 +68,7 @@ ScholarChart 站在断层中间：**把期刊规范做成默认值，把淡雅�
 ![点图](assets/final_dotplot.png)
 ![主题趋势图](assets/final_trendtopic.png)
 ![共现网络图](assets/final_network.png)
+![主题河流图](assets/final_river.png)
 
 **现代统计学图型（第二批）**——不换皮，真算法：
 
