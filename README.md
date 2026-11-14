@@ -57,12 +57,14 @@ ScholarChart 站在断层中间：**把期刊规范做成默认值，把淡雅�
 | 坡度图 | 分组柱状图（前后对比） | Tufte：多时间点排名/数值流转，两端标签自动防叠 |
 | 战略坐标图 | ——（文献计量专属） | Cobo et al. 2011：密度 × 向心性四象限定位研究主题，气泡 ∝ 文献量，标签防碰撞 |
 | 点图 | 分组柱状图 | Cleveland & McGill 1984：位置编码感知精度 > 长度编码 |
+| 主题趋势图 | ——（文献计量专属） | Biblioshiny Trend Topic：关键词年度跨度横线 + 峰值年圆点，圆点面积 ∝ 词频 |
 
 ![雨云图](assets/final_raincloud.png)
 ![UpSet 图](assets/final_upset.png)
 ![坡度图](assets/final_slope.png)
 ![战略坐标图](assets/final_thematic.png)
 ![点图](assets/final_dotplot.png)
+![主题趋势图](assets/final_trendtopic.png)
 
 **现代统计学图型（第二批）**——不换皮，真算法：
 

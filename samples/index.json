@@ -35,6 +35,11 @@
     "type": "slope"
   },
   {
+    "file": "trendtopic.json",
+    "name": "敦煌学关键词主题趋势图",
+    "type": "trendtopic"
+  },
+  {
     "file": "thematic.json",
     "name": "研究主题战略坐标图",
     "type": "thematic"

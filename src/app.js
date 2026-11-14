@@ -1,24 +1,25 @@
 /* ============ 应用外壳：图表切换 / 尺寸预设 / 配色 / 数据编辑 / 导出 ============ */
 
-import { PAL, PALETTES, FONT, setFont } from './core/svg.js?v=20261111h';
-import { draw as trend } from './charts/trend.js?v=20261111h';
-import { draw as bars } from './charts/bars.js?v=20261111h';
-import { draw as heatmap } from './charts/heatmap.js?v=20261111h';
-import { draw as radar } from './charts/radar.js?v=20261111h';
-import { draw as raincloud } from './charts/raincloud.js?v=20261111h';
-import { draw as upset } from './charts/upset.js?v=20261111h';
-import { draw as slope } from './charts/slope.js?v=20261111h';
-import { draw as thematic } from './charts/thematic.js?v=20261111h';
-import { draw as dotplot } from './charts/dotplot.js?v=20261111h';
-import { draw as forest } from './charts/forest.js?v=20261111h';
-import { draw as estimation } from './charts/estimation.js?v=20261111h';
-import { draw as ridgeline } from './charts/ridgeline.js?v=20261111h';
-import { draw as blandaltman } from './charts/blandaltman.js?v=20261111h';
-import { draw as kaplanmeier } from './charts/kaplanmeier.js?v=20261111h';
-import { draw as roc } from './charts/roc.js?v=20261111h';
-import { draw as qq } from './charts/qq.js?v=20261111h';
-import { draw as stl } from './charts/stl.js?v=20261111h';
-import { exportSVG, exportPNG, exportPDF } from './export.js?v=20261111h';
+import { PAL, PALETTES, FONT, setFont } from './core/svg.js?v=20261114a';
+import { draw as trend } from './charts/trend.js?v=20261114a';
+import { draw as bars } from './charts/bars.js?v=20261114a';
+import { draw as heatmap } from './charts/heatmap.js?v=20261114a';
+import { draw as radar } from './charts/radar.js?v=20261114a';
+import { draw as raincloud } from './charts/raincloud.js?v=20261114a';
+import { draw as upset } from './charts/upset.js?v=20261114a';
+import { draw as slope } from './charts/slope.js?v=20261114a';
+import { draw as trendtopic } from './charts/trendtopic.js?v=20261114a';
+import { draw as thematic } from './charts/thematic.js?v=20261114a';
+import { draw as dotplot } from './charts/dotplot.js?v=20261114a';
+import { draw as forest } from './charts/forest.js?v=20261114a';
+import { draw as estimation } from './charts/estimation.js?v=20261114a';
+import { draw as ridgeline } from './charts/ridgeline.js?v=20261114a';
+import { draw as blandaltman } from './charts/blandaltman.js?v=20261114a';
+import { draw as kaplanmeier } from './charts/kaplanmeier.js?v=20261114a';
+import { draw as roc } from './charts/roc.js?v=20261114a';
+import { draw as qq } from './charts/qq.js?v=20261114a';
+import { draw as stl } from './charts/stl.js?v=20261114a';
+import { exportSVG, exportPNG, exportPDF } from './export.js?v=20261114a';
 
 const CHARTS = {
   trend: { name: '趋势图', mod: trend },
@@ -28,6 +29,7 @@ const CHARTS = {
   raincloud: { name: '雨云图', mod: raincloud },
   upset: { name: 'UpSet 图', mod: upset },
   slope: { name: '坡度图', mod: slope },
+  trendtopic: { name: '主题趋势图', mod: trendtopic },
   thematic: { name: '战略坐标图', mod: thematic },
   dotplot: { name: '点图', mod: dotplot },
   forest: { name: '森林图', mod: forest },
@@ -57,7 +59,7 @@ const state = {
 const $ = s => document.querySelector(s);
 
 async function loadSamples() {
-  const list = await (await fetch('./samples/index.json?v=20261111h')).json();
+  const list = await (await fetch('./samples/index.json?v=20261114a')).json();
   const sel = $('#sampleSel');
   sel.innerHTML = '';
   for (const s of list) {
@@ -72,7 +74,7 @@ async function loadSamples() {
 }
 
 async function loadSample(file, type, resetType) {
-  const j = await (await fetch('./samples/' + file + '?v=20261111h')).json();
+  const j = await (await fetch('./samples/' + file + '?v=20261114a')).json();
   if (j.type && CHARTS[j.type]) { state.type = j.type; autoSize(j.type); }
   state.data = j.data;
   state.meta = { ...j.opts };
@@ -177,7 +179,7 @@ buildUI();
 loadSamples().catch(async e => {
   /* file:// 直开时 fetch 失败 → 内嵌兜底数据 */
   console.warn(e);
-  const { FALLBACK } = await import('./fallback.js?v=20261111h');
+  const { FALLBACK } = await import('./fallback.js?v=20261114a');
   state.type = 'trend'; state.data = FALLBACK.data; state.meta = { ...FALLBACK.opts };
   syncForm(); render();
 });

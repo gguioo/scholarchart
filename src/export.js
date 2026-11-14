@@ -1,6 +1,6 @@
 /* ============ 导出：SVG（可文字转曲）/ PNG（600dpi 可调）/ 矢量 PDF（打印管线） ============ */
 
-import { FONT } from './core/svg.js?v=20261111h';
+import { FONT } from './core/svg.js?v=20261114a';
 
 /* 内置子集字体（与 FONT 栈首位的 @font-face 同源），转曲与所见即所得一致 */
 const FONT_FILES = {
