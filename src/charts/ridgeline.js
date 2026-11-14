@@ -1,10 +1,10 @@
 /* ============ 山脊图（多分布错层叠放：分布随类别/时间的漂移） ============ */
 /* ridgeline / joyplot —— 20 个小直方图的优雅替身 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114e';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114e';
-import { niceTicks, linear, kde, smoothPath } from '../core/scale.js?v=20261114e';
-import { tip, tipHide } from '../core/tip.js?v=20261114e';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114f';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114f';
+import { niceTicks, linear, kde, smoothPath } from '../core/scale.js?v=20261114f';
+import { tip, tipHide } from '../core/tip.js?v=20261114f';
 
 /*
  * data = {

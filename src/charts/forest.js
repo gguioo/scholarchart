@@ -1,10 +1,10 @@
 /* ============ 森林图（元分析合并效应：证据综合的招牌图） ============ */
 /* 逆方差权重 + DerSimonian-Laird 随机效应 + Q / I² 异质性检验 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114e';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114e';
-import { niceTicks, linear } from '../core/scale.js?v=20261114e';
-import { tip, tipHide } from '../core/tip.js?v=20261114e';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114f';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114f';
+import { niceTicks, linear } from '../core/scale.js?v=20261114f';
+import { tip, tipHide } from '../core/tip.js?v=20261114f';
 
 /*
  * data = {

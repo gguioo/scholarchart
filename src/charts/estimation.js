@@ -1,10 +1,10 @@
 /* ============ 估计图（Gardner-Altman：效应量 + bootstrap CI） ============ */
 /* estimation statistics 运动：不报 p 值，直接画效应大小与不确定性 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114e';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114e';
-import { niceTicks, linear, kde, mulberry32 } from '../core/scale.js?v=20261114e';
-import { tip, tipHide } from '../core/tip.js?v=20261114e';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114f';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114f';
+import { niceTicks, linear, kde, mulberry32 } from '../core/scale.js?v=20261114f';
+import { tip, tipHide } from '../core/tip.js?v=20261114f';
 
 /*
  * data = {
@@ -38,28 +38,29 @@ export function draw(svg, data, o = {}) {
   boots.sort((a, b) => a - b);
   const ci = [boots[Math.floor(B_ * .025)], boots[Math.floor(B_ * .975)]];
 
-  /* 布局：左 = 两组原始数据（约 6 成宽）；右 = 差值轴；整体在幅面内居中 */
+  /* 布局：原始数据与差值轴同属一个区块（差值轴紧邻 B 组云，共享 y 轴），
+     整个区块在幅面内水平居中，内部相对间距保持不变 */
   const all = A.values.concat(B.values);
   const Y = niceTicks(Math.min(0, ...all, ci[0]), Math.max(...all, ci[1]) + .001, 5);
   const footY = H - footH;
   const plotH = footY - top - 14;
   const val = linear(Y.lo, Y.hi, footY - 2, top + 14);
-  const mL = 16, mR = 12;                          // 左：Y 轴标签；右：差值刻度
-  const contentW = W - mL - mR;
-  const halfW = Math.min(10.5, contentW * .075);   // 每组点云半宽
-  const ax = mL + contentW * .17;                  // A 组中心
-  const bx = mL + contentW * .42;                  // B 组中心
-  const dax = mL + contentW * .82;                 // 右面板差值轴 x
+  const halfW = Math.min(10.5, W * .12);           // 每组点云半宽
+  const ax0 = 38, bx0 = ax0 + 26;                  // 两组中心（相对间距固定）
+  const dax0 = bx0 + halfW + 12;                   // 差值轴紧邻 B 组云
+  const leftEdge = 6, rightEdge = dax0 + 9;        // 区块左右缘（含刻度标签）
+  const dx = (W - (rightEdge - leftEdge)) / 2 - leftEdge;
+  const ax = ax0 + dx, bx = bx0 + dx, dax = dax0 + dx;
 
-  /* Y 轴刻度（左缘） */
+  /* Y 轴刻度（区块左缘，随区块整体平移） */
   for (const t of Y.ticks) {
-    el('line', { x1: 14, x2: 15.2, y1: val(t), y2: val(t), stroke: INK.axis, 'stroke-width': .3 }, svg);
-    text(svg, 13, val(t) + .9, fmt(t), { size: 2.4, anchor: 'end', fill: INK.soft });
-    el('line', { x1: 15.2, x2: bx + halfW + 3, y1: val(t), y2: val(t), stroke: INK.hair, 'stroke-width': .2 }, svg);
+    el('line', { x1: 14 + dx, x2: 15.2 + dx, y1: val(t), y2: val(t), stroke: INK.axis, 'stroke-width': .3 }, svg);
+    text(svg, 13 + dx, val(t) + .9, fmt(t), { size: 2.4, anchor: 'end', fill: INK.soft });
+    el('line', { x1: 15.2 + dx, x2: bx + halfW + 3, y1: val(t), y2: val(t), stroke: INK.hair, 'stroke-width': .2 }, svg);
   }
   if (data.y?.label) {
     const t = text(svg, 0, 0, data.y.label, { size: 2.8, anchor: 'middle', fill: INK.base });
-    t.setAttribute('transform', `translate(6 ${top + 14 + plotH / 2}) rotate(-90)`);
+    t.setAttribute('transform', `translate(${6 + dx} ${top + 14 + plotH / 2}) rotate(-90)`);
   }
 
   /* 两组：抖动散点 + 均值须（无跨云连线，Gardner-Altman 期刊版） */
@@ -114,7 +115,7 @@ export function draw(svg, data, o = {}) {
   text(svg, dax, footY + 3.4, '差值（B − A）', { size: 2.5, anchor: 'middle', fill: INK.base });
 
   /* 底部效应摘要 */
-  text(svg, 16, H - 20.5, `效应量：Δ = ${delta >= 0 ? '+' : ''}${fmt(+delta.toFixed(2))} 分，95% CI [${fmt(+ci[0].toFixed(2))}, ${fmt(+ci[1].toFixed(2))}]（n = ${A.values.length}/${B.values.length}，B = ${B_}）`, { size: 2.3, fill: INK.soft });
+  text(svg, 16 + dx, H - 20.5, `效应量：Δ = ${delta >= 0 ? '+' : ''}${fmt(+delta.toFixed(2))} 分，95% CI [${fmt(+ci[0].toFixed(2))}, ${fmt(+ci[1].toFixed(2))}]（n = ${A.values.length}/${B.values.length}，B = ${B_}）`, { size: 2.3, fill: INK.soft });
 
   figureNote(svg, o);
   return svg;
