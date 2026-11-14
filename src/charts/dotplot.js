@@ -1,9 +1,9 @@
 /* ============ 克利夫兰点图（位置编码 > 长度编码：分组柱状图的更优替身） ============ */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114f';
-import { caption, figureNote, legend, fmt } from '../core/axis.js?v=20261114f';
-import { niceTicks, linear } from '../core/scale.js?v=20261114f';
-import { tip, tipHide } from '../core/tip.js?v=20261114f';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114g';
+import { caption, figureNote, legend, fmt } from '../core/axis.js?v=20261114g';
+import { niceTicks, linear } from '../core/scale.js?v=20261114g';
+import { tip, tipHide } from '../core/tip.js?v=20261114g';
 
 /*
  * data = {

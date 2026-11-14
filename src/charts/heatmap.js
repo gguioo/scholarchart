@@ -1,8 +1,8 @@
 /* ============ 矩阵热力图（共现矩阵 · 序列色 · 色标） ============ */
 
-import { el, text, INK, SEQUENTIAL } from '../core/svg.js?v=20261114f';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114f';
-import { tip, tipHide } from '../core/tip.js?v=20261114f';
+import { el, text, INK, SEQUENTIAL } from '../core/svg.js?v=20261114g';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114g';
+import { tip, tipHide } from '../core/tip.js?v=20261114g';
 
 /*
  * data = {

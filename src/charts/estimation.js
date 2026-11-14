@@ -1,10 +1,10 @@
 /* ============ 估计图（Gardner-Altman：效应量 + bootstrap CI） ============ */
 /* estimation statistics 运动：不报 p 值，直接画效应大小与不确定性 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114f';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114f';
-import { niceTicks, linear, kde, mulberry32 } from '../core/scale.js?v=20261114f';
-import { tip, tipHide } from '../core/tip.js?v=20261114f';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114g';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114g';
+import { niceTicks, linear, kde, mulberry32 } from '../core/scale.js?v=20261114g';
+import { tip, tipHide } from '../core/tip.js?v=20261114g';
 
 /*
  * data = {
@@ -17,11 +17,22 @@ export function draw(svg, data, o = {}) {
   svg.innerHTML = '';
   const W = +svg.getAttribute('width'), H = +svg.getAttribute('height');
   const top = caption(svg, o);
-  const [A, B] = data.groups;
   const cs = colors();
   const footH = 32;
 
-  const B_ = o.B ?? 3000;
+  /* 健壮性：需要恰好两组、各至少 1 个有限数值；不合法时给提示而不是抛错 */
+  const G = (data.groups || []).slice(0, 2).map((g, gi) => ({
+    name: g && g.name ? g.name : (gi ? 'B 组' : 'A 组'),
+    values: ((g && g.values) || []).map(Number).filter(Number.isFinite)
+  }));
+  if (G.length < 2 || !G[0].values.length || !G[1].values.length) {
+    text(svg, W / 2, H / 2, '估计图需要两组数据：groups: [{ name, values }, { name, values }]', { size: 3, anchor: 'middle', fill: INK.soft });
+    figureNote(svg, o);
+    return svg;
+  }
+  const [A, B] = G;
+
+  const B_ = Math.max(2, o.B ?? 3000) | 0;
   const mA = A.values.reduce((a, b) => a + b, 0) / A.values.length;
   const mB = B.values.reduce((a, b) => a + b, 0) / B.values.length;
   const delta = mB - mA;
@@ -41,7 +52,10 @@ export function draw(svg, data, o = {}) {
   /* 布局：原始数据与差值轴同属一个区块（差值轴紧邻 B 组云，共享 y 轴），
      整个区块在幅面内水平居中，内部相对间距保持不变 */
   const all = A.values.concat(B.values);
-  const Y = niceTicks(Math.min(0, ...all, ci[0]), Math.max(...all, ci[1]) + .001, 5);
+  /* 大样本不展开成参数（避免超长数组触发调用栈上限），循环求极值 */
+  let yLo = Math.min(0, ci[0]), yHi = Math.max(ci[1]);
+  for (const v of all) { if (v < yLo) yLo = v; if (v > yHi) yHi = v; }
+  const Y = niceTicks(yLo, yHi + .001, 5);
   const footY = H - footH;
   const plotH = footY - top - 14;
   const val = linear(Y.lo, Y.hi, footY - 2, top + 14);
