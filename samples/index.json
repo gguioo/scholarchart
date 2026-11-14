@@ -88,5 +88,10 @@
     "file": "stl.json",
     "name": "月度发文量时序分解",
     "type": "stl"
+  },
+  {
+    "file": "network.json",
+    "name": "数字人文关键词共现网络",
+    "type": "network"
   }
 ]

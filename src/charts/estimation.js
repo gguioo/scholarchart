@@ -1,10 +1,10 @@
 /* ============ 估计图（Gardner-Altman：效应量 + bootstrap CI） ============ */
 /* estimation statistics 运动：不报 p 值，直接画效应大小与不确定性 */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114a';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114a';
-import { niceTicks, linear, kde, mulberry32 } from '../core/scale.js?v=20261114a';
-import { tip, tipHide } from '../core/tip.js?v=20261114a';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114b';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114b';
+import { niceTicks, linear, kde, mulberry32 } from '../core/scale.js?v=20261114b';
+import { tip, tipHide } from '../core/tip.js?v=20261114b';
 
 /*
  * data = {

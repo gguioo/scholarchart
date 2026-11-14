@@ -1,9 +1,9 @@
 /* ============ 主题趋势图（Trend Topic：文献计量关键词年度跨度） ============ */
 
-import { el, text, INK, colors } from '../core/svg.js?v=20261114a';
-import { caption, figureNote, fmt } from '../core/axis.js?v=20261114a';
-import { niceTicks, linear } from '../core/scale.js?v=20261114a';
-import { tip, tipHide } from '../core/tip.js?v=20261114a';
+import { el, text, INK, colors } from '../core/svg.js?v=20261114b';
+import { caption, figureNote, fmt } from '../core/axis.js?v=20261114b';
+import { niceTicks, linear } from '../core/scale.js?v=20261114b';
+import { tip, tipHide } from '../core/tip.js?v=20261114b';
 
 /*
  * data = {
